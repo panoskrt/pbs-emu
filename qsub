@@ -43,5 +43,5 @@ fi
 jobID=`${randomFile} | grep "than 200" | awk {'print $7'}`
 time=`date | awk {'print $4'}`
 NAME=$1
-printf "${jobID} \t\t  ${NAME} \t   ${USER} \t     00:20:00 R hpce2jra2_12h\n" >> ${listFile}
+printf "${jobID} \t\t  ${NAME} \t\t   ${USER} \t     00:20:00 R hpce2jra2_12h\n" >> ${listFile}
 echo "Your job ${jobID} has been submitted"
