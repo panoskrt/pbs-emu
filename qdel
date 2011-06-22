@@ -1,0 +1,66 @@
+#!/bin/bash
+
+VERSION=0.1
+
+if [ -e /usr/local/pbs-emu-${VERSION}/qstat_list ]; then
+   listFile=/usr/local/pbs-emu-${VERSION}/qstat_list
+else
+   listFile=qstat_list
+fi
+
+if [ $# -lt 1 ]; then
+   echo "usage: qdel [options] job_task_list"
+   printf "   [ -u user_list] \t\t delete all jobs of user specified in list\n"
+   printf "   job_task_list \t\t delete all jobs given in list\n"
+   exit
+fi
+
+user=$USER
+
+if [ "$1" != "-u" ]; then
+   if [ $# -gt 1 ]; then
+      for i in $@; do
+         jobs=`grep -w $i ${listFile} | awk {'print $1'}`
+         jobsUser=`grep $i ${listFile} | awk {'print $3'}`
+         if [ "${jobs}" != "" ]; then
+            if [ "${user}" == "${jobsUser}" ]; then
+               grep -v $i ${listFile} > qstat_list.tmp
+               mv qstat_list.tmp ${listFile}
+               echo "Job $i removed from the queue"
+            else
+               echo "qdel: Unauthorized Reqest: $i"   
+            fi
+        else
+            echo "qdel: Unknown Job Id $i"
+        fi
+      done
+   else
+
+       jobID=$1
+       qstatUser=`grep ${jobID} ${listFile} | awk {'print $3'}`
+
+       if [ "${qstatUser}" == "" ]; then
+          echo "qdel: Unknown Job Id ${jobID}"
+          exit
+       fi
+
+       if [ "${user}" == "${qstatUser}" ]; then
+         grep -v ${jobID} ${listFile} > qstat_list.tmp
+         mv qstat_list.tmp ${listFile}
+         echo "Job ${jobID} removed from the queue"
+      else
+         echo "qdel: Unauthorized Request: ${jobID}"
+      fi
+   fi
+elif [ "$1" == "-u" ]; then
+
+   username=$2
+
+   if [ "${user}" == "${username}" ]; then
+      grep -v ${username} ${listFile} > qstat_list.tmp
+      mv qstat_list.tmp ${listFile}
+      echo 'All jobs for user '"'${username}'"' removed from queue'
+   else
+      echo "qdel: Unauthorized Request: ${jobID}"
+   fi
+fi

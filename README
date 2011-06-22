@@ -1,0 +1,5 @@
+Very basic scripts for emulating some of the PBS batch system behaviour
+
+- qsub -> submitting jobs
+- qstat -> listing jobs
+- qdel -> removing jobs

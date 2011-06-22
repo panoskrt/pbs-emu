@@ -1,0 +1,9 @@
+Job id            Name             User              Time Use S Queue
+----------------  ---------------- ----------------  -------- - -----
+100922.sdb        bwa2             fmorton           00:00:02 R par:4n_20m      
+100924.sdb        eosmgo           miammann          00:00:01 R par:4n_3h       
+100925.sdb        rmt_test         mlysaght          00:00:00 R par:4n_1h       
+100927.sdb        pbo-dos          aturner           00:00:01 R par:4n_1h       
+100931.sdb        RUN.pbs          tal06                    0 Q serial          
+100932.sdb        xfrgi000         aschurer                 0 Q parallel        
+100933.sdb        xfrgj000         aschurer                 0 Q parallel 

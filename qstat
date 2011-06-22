@@ -1,0 +1,21 @@
+#!/bin/bash
+
+VERSION=0.1
+
+if [ -e /usr/local/pbs-emu-${VERSION}/qstat_list ]; then
+   listFile=/usr/local/pbs-emu-${VERSION}/qstat_list
+else
+   listFile=qstat_list
+fi
+
+if [ "$1" == "" ]; then
+   cat ${listFile}
+elif [ "$1" == "-u" ]; then
+   username=$2
+   if [ "${username}" == "" ]; then
+      echo "Not a valid username"
+      exit 1
+   else
+      grep ${username} ${listFile}
+   fi
+fi

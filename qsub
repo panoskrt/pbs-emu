@@ -1,0 +1,30 @@
+#!/bin/bash
+
+VERSION=0.1
+
+if [ -e /usr/local/pbs-emu-${VERSION}/qstat_list ]; then
+   listFile=/usr/local/pbs-emu-${VERSION}/qstat_list
+   manFile=/usr/local/pbs-emu-${VERSION}/qsub.txt
+   randomFile=/usr/local/pbs-emu-${VERSION}/random.sh
+else
+   listFile=qstat_list
+   manFile=qsub.txt
+   randomFile=./random.sh
+fi
+
+if [ $# -lt 1 ]; then
+   echo -n " No arguments given. Do you want to have a look at the man page (y/n)? "
+   read respond
+   if [ "${respond}" == "y" ] || [ "${respond}" == "Y" ]; then
+      more ${manFile}
+      exit
+   else
+      exit
+   fi
+fi
+
+jobID=`${randomFile} | grep "than 200" | awk {'print $7'}`
+time=`date | awk {'print $4'}`
+NAME=$1
+printf "${jobID} \t\t  ${NAME} \t   ${USER} \t     00:20:00 R hpce2jra2_12h\n" >> ${listFile}
+echo "Your job ${jobID} has been submitted"
